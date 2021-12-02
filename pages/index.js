@@ -5,6 +5,7 @@ import { ACTIONS } from '../actions';
 import DigitBtn from '../components/DigitBtn';
 import OperationBtn from '../components/OperationBtn';
 import { formatOperand } from '../reducers/calcReducer';
+import axios from 'axios';
 
 export default function Home() {
   const [{ currOperand, prevOperand, operation }, dispatch] = useReducer(
@@ -16,18 +17,20 @@ export default function Home() {
   const [debouncedNum, setDebouncedNum] = useState(0);
 
   useEffect(() => {
-    console.log('1 ran');
-    if (debouncedNum && !isNaN(debouncedNum)) {
-      fetch(
-        `https://cors-anywhere.herokuapp.com/http://numbersapi.com/${Math.abs(
-          parseInt(debouncedNum)
-        )}?json`
-      )
-        .then((res) => res.json())
-        .then((data) => setFact(data.text));
-    } else {
-      setFact(null);
-    }
+    const fetchWiki = async () => {
+      if (debouncedNum && !isNaN(debouncedNum)) {
+        // Math.abs(parseInt(debouncedNum))
+        const res = await axios.get(
+          `https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=${debouncedNum}`
+        );
+
+        setFact(res.data[3]);
+      } else {
+        setFact(null);
+      }
+    };
+
+    fetchWiki();
   }, [debouncedNum]);
 
   useEffect(() => {
@@ -88,13 +91,14 @@ export default function Home() {
             =
           </button>
         </div>
-        {fact ? (
-          <div className="bg-red-100 md:w-1/3 w-auto m-4">{fact}</div>
-        ) : (
-          <div className="bg-red-100 md:w-1/3 w-auto m-4 animate-bounce">
-            ...
-          </div>
-        )}
+        <div className="bg-red-100 md:w-1/3 w-auto m-4">
+          {fact &&
+            fact.map((link) => (
+              <div key={link}>
+                <a href={link}>{link}</a>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
