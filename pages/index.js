@@ -13,21 +13,33 @@ export default function Home() {
   );
 
   const [fact, setFact] = useState(null);
+  const [debouncedNum, setDebouncedNum] = useState(0);
 
   useEffect(() => {
-    if (currOperand && !isNaN(currOperand)) {
+    console.log('1 ran');
+    if (debouncedNum && !isNaN(debouncedNum)) {
       fetch(
         `https://cors-anywhere.herokuapp.com/http://numbersapi.com/${Math.abs(
-          parseInt(currOperand)
+          parseInt(debouncedNum)
         )}?json`
       )
         .then((res) => res.json())
         .then((data) => setFact(data.text));
-    }
-    {
+    } else {
       setFact(null);
     }
+  }, [debouncedNum]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedNum(currOperand);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [currOperand]);
+
   return (
     <div className="min-h-screen bg-blue-200">
       <Head>
