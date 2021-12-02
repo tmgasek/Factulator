@@ -17,11 +17,12 @@ export default function Home() {
   useEffect(() => {
     console.log(currOperand);
     if (currOperand && !isNaN(currOperand)) {
-      fetch(`http://numbersapi.com/${parseInt(currOperand)}?json`)
+      fetch(`http://numbersapi.com/${Math.abs(parseInt(currOperand))}?json`)
         .then((res) => res.json())
         .then((data) => setFact(data.text));
-    } else {
-      setFact('...');
+    }
+    {
+      setFact(null);
     }
   }, [currOperand]);
   return (
@@ -72,7 +73,13 @@ export default function Home() {
             =
           </button>
         </div>
-        <div className="bg-red-100 md:w-1/3 w-auto m-4 ">{fact}</div>
+        {fact ? (
+          <div className="bg-red-100 md:w-1/3 w-auto m-4">{fact}</div>
+        ) : (
+          <div className="bg-red-100 md:w-1/3 w-auto m-4 animate-bounce">
+            ...
+          </div>
+        )}
       </div>
     </div>
   );
