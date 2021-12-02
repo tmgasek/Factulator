@@ -14,6 +14,7 @@ export default function calcReducer(state, { type, payload }) {
       if (payload.digit === '0' && state.currOperand == '0') {
         return state;
       }
+
       //optional chaining to prevent error upon entering "." on empty calc.
       if (payload.digit === '.' && state.currOperand?.includes('.')) {
         return state;
@@ -27,13 +28,17 @@ export default function calcReducer(state, { type, payload }) {
       return {};
 
     case ACTIONS.CHOOSE_OPERATION:
-      // TODO:
-      // if (payload.operation === '-') {
-      //   return {
-      //     ...state,
-      //     currOperand: `${payload.operation}${payload.digit || ''}`,
-      //   };
-      // }
+      if (state.currOperand === '-') {
+        return state;
+      }
+
+      if (payload.operation === '-' && !state.currOperand) {
+        return {
+          ...state,
+          currOperand: '-',
+        };
+      }
+
       if (!state.currOperand && !state.prevOperand) {
         return state;
       }
@@ -127,6 +132,7 @@ const INTEGER_FORMATTER = new Intl.NumberFormat('eng-GB', {
 
 export function formatOperand(operand) {
   if (!operand) return null;
+  if (operand == '-') return '-';
   const [integer, decimal] = operand.split('.');
   if (!decimal) return INTEGER_FORMATTER.format(integer);
   return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;

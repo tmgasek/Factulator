@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import calcReducer from '../reducers/calcReducer';
 import { ACTIONS } from '../actions';
 import DigitBtn from '../components/DigitBtn';
@@ -11,21 +11,35 @@ export default function Home() {
     calcReducer,
     {}
   );
+
+  const [fact, setFact] = useState(null);
+
+  useEffect(() => {
+    console.log(currOperand);
+    if (currOperand && !isNaN(currOperand)) {
+      fetch(`http://numbersapi.com/${parseInt(currOperand)}?json`)
+        .then((res) => res.json())
+        .then((data) => setFact(data.text));
+    } else {
+      setFact('...');
+    }
+  }, [currOperand]);
   return (
-    <>
+    <div className="min-h-screen bg-blue-200">
       <Head>
         <title>Factulator | A calculator with facts!</title>
       </Head>
-      <div className="flex">
-        <div className="grid grid-cols-4 grid-rows-auto m-5 gap-5 w-72 bg-gray-100">
-          <div className="col-span-full flex flex-col items-end justify-around p-1 flex-wrap break-all h-16 bg-gray-400">
-            <div className="text-xs">
+      <div className=" flex flex-col items-center md:flex-row md:justify-around">
+        {/* <div className="grid md:grid-cols-calcColXL md:grid-rows-calcRowXL m-5 gap-5 max-w-2xl bg-gray-100"> */}
+        <div className="grid grid-cols-calcColSm grid-rows-calcRowSm md:grid-cols-calcColXL md:grid-rows-calcRowXL m-5 gap-5 bg-gray-100 p-10 shadow-xl rounded-lg">
+          <div className=" col-span-full flex flex-col items-end justify-around px-2 flex-wrap break-all bg-gray-700 rounded-xl text-gray-100">
+            <div className="text-xl">
               {formatOperand(prevOperand)} {operation}
             </div>
-            <div>{formatOperand(currOperand)}</div>
+            <div className="text-3xl">{formatOperand(currOperand)}</div>
           </div>
           <button
-            className="col-span-3"
+            className="col-span-3 rounded-xl bg-pink-100 shadow-lg hover:border-2 hover:border-gray-500 focus:outline-none"
             onClick={() => dispatch({ type: ACTIONS.CLEAR })}
           >
             AC
@@ -45,15 +59,21 @@ export default function Home() {
           <OperationBtn operation="+" dispatch={dispatch} />
           <DigitBtn digit="0" dispatch={dispatch} />
           <DigitBtn digit="." dispatch={dispatch} />
-          <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
+          <button
+            className="bg-pink-100 rounded-xl shadow-lg hover:border-2 hover:border-gray-500 focus:outline-none"
+            onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}
+          >
             {'<-'}
           </button>
-          <button onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>
+          <button
+            className="bg-pink-100 rounded-xl shadow-lg hover:border-2 hover:border-gray-500 focus:outline-none"
+            onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
+          >
             =
           </button>
         </div>
-        <div></div>
+        <div className="bg-red-100 md:w-1/3 w-auto m-4 ">{fact}</div>
       </div>
-    </>
+    </div>
   );
 }
