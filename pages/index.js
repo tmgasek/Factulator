@@ -15,9 +15,12 @@ export default function Home() {
   const [fact, setFact] = useState(null);
 
   useEffect(() => {
-    console.log(currOperand);
     if (currOperand && !isNaN(currOperand)) {
-      fetch(`http://numbersapi.com/${Math.abs(parseInt(currOperand))}?json`)
+      fetch(
+        `https://cors-anywhere.herokuapp.com/http://numbersapi.com/${Math.abs(
+          parseInt(currOperand)
+        )}?json`
+      )
         .then((res) => res.json())
         .then((data) => setFact(data.text));
     }
