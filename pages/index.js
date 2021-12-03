@@ -31,7 +31,7 @@ export default function Home() {
       }
     };
 
-    // queryApi();
+    queryApi();
   }, [debouncedNum]);
 
   useEffect(() => {
