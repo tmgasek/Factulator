@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-secondary">
       <Head>
-        <title>Factulator | A calculator with facts!</title>
+        <title>CalcuSearch | A calculator with wikipedia queries!</title>
       </Head>
       <div className=" flex flex-col items-center md:flex-row md:justify-around">
         {/* <div className="grid md:grid-cols-calcColXL md:grid-rows-calcRowXL m-5 gap-5 max-w-2xl bg-gray-100"> */}
