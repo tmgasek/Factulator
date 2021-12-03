@@ -11,6 +11,7 @@ export default function calcReducer(state, { type, payload }) {
           evalDone: false,
         };
       }
+
       if (payload.digit === '0' && state.currOperand == '0') {
         return state;
       }
@@ -19,6 +20,7 @@ export default function calcReducer(state, { type, payload }) {
       if (payload.digit === '.' && state.currOperand?.includes('.')) {
         return state;
       }
+
       return {
         ...state,
         currOperand: `${state.currOperand || ''}${payload.digit}`, //the || "" is to neutralise the default undefined.

@@ -12,6 +12,13 @@ module.exports = {
         calcRowXL: 'minmax(7rem, auto) repeat(5, 6rem)',
         calcRowSm: 'minmax(7rem, auto) repeat(5, 3rem)',
       },
+      colors: {
+        primary: '#555b6e',
+        secondary: '#89b0ae',
+        tertiary: '#bee3db',
+        accent1: '#faf9f9',
+        accent2: '#ffd6ba',
+      },
     },
   },
   variants: {
