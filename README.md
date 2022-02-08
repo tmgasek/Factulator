@@ -1,17 +1,15 @@
-## CalcuSearch
+# CalcuSearch
 
-This is a calculator app that also queries the Wikipedia API with the current operand in order to receive and output some pages related to that number.
+This is a calculator app that also queries the Wikipedia API with the current operand and displays pages related to that number.
 
-Technologies used:
+### Technologies used:
 - NextJS
 - ReactJS
 - Tailwind CSS
 
 
-To run a local version, run 
+To run a local version, run `npm run dev'
 
-<code>yarn install</code>
+To see it live, click [here](https://calcusearch.vercel.app/)
 
-To see it in action, visit
 
-https://calcusearch.vercel.app/
